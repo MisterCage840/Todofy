@@ -1,0 +1,9 @@
+*{
+    margin: 0;
+}
+.pageHeader{
+    font-size: 2rem;
+    text-align: left;
+    padding: 1%;
+    background-color: lightblue;
+}
