@@ -3,24 +3,42 @@ import { toDoTask } from './task'
 import { project } from './project'
 import {newProjectClick, addProjectBtnClick} from './newProject.js'
 import { projectsContainer } from './projectsContainer'
+import {logErrorMessage} from './errorLog.js'
 
 //HTML selectors
 const newProjectBtn = document.querySelector('.newProjectBtn')
 const userUIContainer = document.querySelector('.userUIContainer')
+const hiddenMessage = document.querySelector('.hiddenMessage')
 
 
 //default and only Projects Container
 const projectsContainer1 = new projectsContainer()
+//default and only Error message logger
+const logErrorMessage1 = new logErrorMessage();
 
-//new Project Btn clicke event Listener
+
+//clear input values
+const clearInput = (inputContainer) => {
+    inputContainer.value = ''
+}
+
+//new Project Btn click event Listener
 newProjectBtn.addEventListener('click', ()=>{
+    userUIContainer.innerHTML = ''
     userUIContainer.appendChild(newProjectClick())
     const addProjectBtn = document.querySelector('.addProjectBtn')
-
+    const projectInput = document.querySelector('.projectInput')
+    
     addProjectBtn.addEventListener('click', (event)=> {
-        event.preventDefault()
-        projectsContainer1.addProject(addProjectBtnClick())
-        // console.log(projectsContainer1.getProjects());
+        if(projectInput.value){
+            logErrorMessage1.clearErrorMessage()
+            event.preventDefault()
+            projectsContainer1.addProject(addProjectBtnClick())
+            clearInput(projectInput)
+            // console.log(projectsContainer1.getProjects());
+        }else{
+            logErrorMessage1.newProjectError()
+        }
     })
 })
 
