@@ -7,3 +7,20 @@
     padding: 1%;
     background-color: lightblue;
 }
+.BtnContainer{
+    margin: 1%;
+    display: flex;
+    gap: 7%;
+}
+.BtnContainer>button{
+    padding: 0.5rem;
+    background-color:seashell;
+    border-radius: 4px;
+    font-weight: bolder;
+}
+.newProjectContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
