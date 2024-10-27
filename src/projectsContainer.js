@@ -4,17 +4,13 @@ const projectsContainer = function() {
     const addProject = (project) => projectArray.push(project)
     const removeProject = (project) =>{
         for(let i=0; i<projectArray.length; i++){
-            if(project.getProjectName() == projectArray[i].getProjectName())
+            if(project.getProjectName() == projectArray[i].getProjectName()){
                 projectArray.splice(i,1)
+            }
         }
     }
 
-    const getProjects = () => {
-        let string = ''
-        for(let i=0; i<projectArray.length; i++)
-            string += projectArray[i].getProjectName()+ '\n'
-        return string
-        }
+    const getProjects = () => projectArray
     
     return {addProject, removeProject, getProjects}
 }

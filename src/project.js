@@ -12,10 +12,16 @@ const project = function(projectName) {
     }
     const removeFromtoDoList = (tasktoRemove) => {
         for(let i=0; i<toDoList.length; i++){
-            if(toDoList[i].getTaskName() == tasktoRemove.getTaskName())
+            if(toDoList[i].getTaskName() == tasktoRemove)
                 toDoList.splice(i,1) 
         }
         return toDoList
+    }
+
+    const removeAllTasks = (project) => {
+        for(let i=0; i < project.gettoDoList(); i++){
+            project.removeFromtoDoList()
+        }
     }
 
 

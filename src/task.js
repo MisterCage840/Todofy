@@ -16,7 +16,7 @@ const toDoTask = function (taskName, dueDate, priority, status, Taskproject){
         return newStatus
     }
     
-    const getProject = () => Taskproject.getProjectName()
+    const getProject = () => Taskproject
     const setProject = (newProject) => Taskproject = newProject
 
     return {getTaskName, setTaskName, getdueDate, setdueDate, getPriority, setPriority, getStatus, toggleStatus, getProject, setProject}

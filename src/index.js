@@ -4,15 +4,22 @@ import { project } from './project'
 import {newProjectClick, addProjectBtnClick} from './newProject.js'
 import { projectsContainer } from './projectsContainer'
 import {logErrorMessage} from './errorLog.js'
+import {newTaskClick} from './newTask.js'
+import {newTaskInputChecker} from './newTaskInputChecker.js'
+import {viewClick} from './view.js'
+import {removeTaskClick} from './removeTask.js'
+import {removeProjectClick} from './removeProject.js'
 
 //HTML selectors
 const newProjectBtn = document.querySelector('.newProjectBtn')
 const userUIContainer = document.querySelector('.userUIContainer')
 const hiddenMessage = document.querySelector('.hiddenMessage')
+const newTaskBtn = document.querySelector('.newTaskBtn')
+const viewBtn = document.querySelector('.viewBtn')
 
 
 //default and only Projects Container
-const projectsContainer1 = new projectsContainer()
+export const projectsContainer1 = new projectsContainer()
 //default and only Error message logger
 const logErrorMessage1 = new logErrorMessage();
 
@@ -20,6 +27,15 @@ const logErrorMessage1 = new logErrorMessage();
 //clear input values
 const clearInput = (inputContainer) => {
     inputContainer.value = ''
+}
+
+//check Input Values for errors or empty values
+const checkInput = (inputs)=> {
+    for(let i=0; i<inputs.length; i++){
+        if(!inputs.value)
+            return 0
+    }
+    return 1
 }
 
 //new Project Btn click event Listener
@@ -42,8 +58,70 @@ newProjectBtn.addEventListener('click', ()=>{
     })
 })
 
+//new Task Button Event Handler
+newTaskBtn.addEventListener('click', () => {
+    userUIContainer.innerHTML = ''
+    userUIContainer.appendChild(newTaskClick())
+    const addTaskBtn = document.querySelector('.addTaskBtn')
+
+    addTaskBtn.addEventListener('click', (event) => {
+        event.preventDefault()
+
+        const taskNameInput = document.querySelector('.taskNameContainer>input')
+        const dueDateInput = document.querySelector('.dueDateContainer>input')
+        const priorityInput = document.querySelector('.priorityContainer>select')
+        const projectNameInput = document.querySelector('.projectNameContainer>select')
+        //if all fields are filled up
+        if(newTaskInputChecker() == 1){
+            let newTask = new toDoTask(taskNameInput.value, dueDateInput.value, priorityInput.value , 'Pending', projectNameInput.value)
+            let newArray = projectsContainer1.getProjects()
+            newArray.forEach(project => {
+              if(project.getProjectName() == newTask.getProject()){
+                project.addtoDoList(newTask)
+                hiddenMessage.textContent = 'Task added successfully!'
+                clearInput(taskNameInput)
+                clearInput(dueDateInput)
+              }  
+            })
+        }else{
+            hiddenMessage.textContent = newTaskInputChecker()
+        }
+    })
+})
 
 
+//view Btn Event Click Handler
+viewBtn.addEventListener('click', ()=> {
+    hiddenMessage.textContent = ''
+    userUIContainer.innerHTML = ''
+    userUIContainer.appendChild(viewClick())
+
+    //remove Task Btn
+    let newArray = projectsContainer1.getProjects()
+    const removeTaskBtns = document.querySelectorAll('.taskNameBtn')
+    const removeProjectBtns = document.querySelectorAll('.projectNameBtn')
+
+    removeProjectBtns.forEach(removeProjectBtn => {
+        removeProjectBtn.addEventListener('click', () => {
+            const projecttoRemove = removeProjectBtn.parentElement.parentElement.querySelector('h3').textContent
+            removeProjectClick(projecttoRemove)
+            hiddenMessage.textContent = ''
+            userUIContainer.innerHTML = ''
+            userUIContainer.appendChild(viewClick())
+        })
+    })
+
+    removeTaskBtns.forEach(removeTaskBtn => {
+        removeTaskBtn.addEventListener('click', ()=> {
+            const tasktoRemove = removeTaskBtn.parentElement.querySelector('p').textContent
+            const removedTaskProject = removeTaskBtn.parentElement.parentElement.querySelector('h3').textContent
+            removeTaskClick(tasktoRemove, removedTaskProject)
+            hiddenMessage.textContent = ''
+            userUIContainer.innerHTML = ''
+            userUIContainer.appendChild(viewClick())
+        })
+    })
+})
 
 
 
